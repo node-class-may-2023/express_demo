@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"name": "T-Shirt",
+		"color": "white",
+		"size": "large"
+	},
+	{
+		"id": 2,
+		"name": "Shoe",
+		"color": "white",
+		"size": "large"
+	},
+	{
+		"id": 3,
+		"name": "Glasses",
+		"color": "black",
+		"size": "medium"
+	},
+	{
+		"id": 4,
+		"name": "Fancy Shoe",
+		"color": "white",
+		"size": "medium"
+	}
+]
