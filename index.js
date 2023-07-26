@@ -2,8 +2,11 @@ require('dotenv').config();
 const express = require('express');
 crypto = require('node:crypto');
 const _ = require('lodash');
-const Validator = require('validatorjs');
-const { validateProduct } = require('./validateProduct');
+const cors = require('cors');
+const {
+  validateCreateProduct,
+  validateUpdateProduct
+} = require('./validateProduct');
 
 const data = require('./mockData.json');
 
@@ -12,6 +15,7 @@ const PORT = process.env.PORT;
 
 // route, endpoint, path
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -33,37 +37,10 @@ app.get('/api/v1/products', (req, res) => {
   res.send(products);
 });
 
-app.post('/api/v1/products2', (req, res) => {
-  const newProduct = req.body;
-
-  // define a validation rule (data schema)
-
-  const rules = {
-    name: 'required|string|between:3,512',
-    size: ['required', { in: ['large', 'medium', 'small'] }],
-    color: 'required'
-  };
-
-  const validationResults = new Validator(newProduct, rules);
-
-  if (validationResults.fails()) {
-    res.status(400).send(validationResults.errors);
-    return;
-  }
-
-  if (_.isObject(newProduct)) {
-    newProduct.id = crypto.randomUUID();
-  }
-
-  data.push(newProduct);
-  console.log(data);
-  res.send(newProduct);
-});
-
 app.post('/api/v1/products', (req, res) => {
   const newProduct = req.body;
 
-  const { error, value } = validateProduct(newProduct);
+  const { error, value } = validateCreateProduct(newProduct);
 
   if (error) {
     res.status(400).send({ error });
@@ -76,8 +53,59 @@ app.post('/api/v1/products', (req, res) => {
   res.send(newProduct);
 });
 
-// query params
+app.patch('/api/v1/products/:id', (req, res) => {
+  // destructure the id from the request params
+  const { id } = req.params;
 
+  // get the product by id
+  const index = data.findIndex(product => product.id == id);
+  // if the product doesn't exist? 404 - NOT FOUND
+  if (index === -1) {
+    res.status(404).send({ message: 'Not Found' });
+    return;
+  }
+  // if the product is found?
+  // validate the data to be updated
+  const { error, value } = validateUpdateProduct(req.body);
+  // validation fails? 400 - Bad Request
+  if (error) {
+    res.status(400).send({
+      error,
+      statusCode: 400,
+      endUserMessage: 'Invalid data',
+      data: null
+    });
+    return;
+  }
+  // validation pass? update the record (data)
+  data[index] = { ...data[index], ...value };
+  // res 200 + the new data
+  res.send({
+    error: null,
+    statusCode: 200,
+    endUserMessage: '',
+    data: data[index]
+  });
+});
+
+app.delete('/api/v1/products/:id', (req, res) => {
+  // destructure the id from the request params : id=1
+  const { id } = req.params;
+  // find if the product record with the id exists
+  const index = data.findIndex(product => product.id == id);
+  // if the product doesn't exist : respond with 404 - not found
+  if (index === -1) {
+    res.status(404).send({ message: 'Not Found' });
+    return;
+  }
+  // if the product exist
+  // delete the product from the data set
+  const deletedProduct = data.splice(index, 1);
+  // return the rest of the product list, and status 200
+  res.send(deletedProduct);
+});
+
+// query params
 // route param
 app.get('/api/v1/products/:id/:color', (req, res) => {
   // extract (destructure) the id from the route parameters
