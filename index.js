@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./db')
 const express = require('express');
 crypto = require('node:crypto');
 const _ = require('lodash');
@@ -9,6 +10,7 @@ const {
 } = require('./validateProduct');
 
 const data = require('./mockData.json');
+const { default: mongoose } = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -133,6 +135,9 @@ app.get('*', (req, res) => {
     );
 });
 
-app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
-});
+mongoose.connection.once('open', ()=>{
+  app.listen(PORT, () => {
+    console.log(`server started on port ${PORT}`);
+  });  
+  console.log('DB connection established')
+})
