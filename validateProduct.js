@@ -39,3 +39,5 @@ const validateUpdateProduct = product => {
 };
 
 module.exports = { validateCreateProduct, validateUpdateProduct };
+
+
