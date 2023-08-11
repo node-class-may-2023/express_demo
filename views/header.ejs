@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="/style.css">
+	<script defer src="/script.js"></script>
+</head>
+
+<body>
+	<header>
+		<h1>Website Header</h1>
+		<nav>
+			<section>
+				<% if (isLoggedIn) { %>
+				<form id='logout-form' action="/logout" method="post">
+					<button type="submit">Log out</button>
+				</form>
+				<% } else { %>
+				<button>Log in</button>
+				<button>Register</button>
+				<% } %>
+
+			</section>
+			<section>
+				<a href="/">Home</a>
+				<a href="/about">About</a>
+				<a href="/contact">Contact</a>
+			</section>
+		</nav>
+		<hr>
+	</header>

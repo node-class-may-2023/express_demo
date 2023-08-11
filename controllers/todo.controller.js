@@ -32,6 +32,34 @@ const createTodo = async (req, res) => {
   }
 }
 
+const createTodoPage = async (req, res) => {
+  try {
+    // destructure request body (JSON)
+    const { body: todo } = req
+
+    // validate request body
+    const { error, value } = validateCreateTodo(todo)
+
+    // in case of invalid data, respond with 400
+    if (error) {
+      res.status(400).render('error', { error })
+      return
+    }
+
+    // get the logged in user id
+    const userId = req?.loggedInUser?._id
+
+    // in case of valid data, create new document (record)
+    const newTodo = await todoModel.create({ ...value, userId })
+
+    // send response with newly created record (incl. id)
+    res.send('successfully created')
+  } catch (dbErr) {
+    // in case of unexpected error, respond with 500
+    res.status(500).render('error', { error: dbErr.message })
+  }
+}
+
 const getTodos = async (req, res) => {
   try {
     // destructure filter params
@@ -162,5 +190,6 @@ module.exports = {
   updateTodo,
   deleteTodo,
   getTodo,
-  getAllTodos
+  getAllTodos,
+  createTodoPage
 }

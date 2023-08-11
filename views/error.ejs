@@ -1,7 +1,5 @@
 <%- include('header', {isLoggedIn}) %>
-
-<main>
-	<h1>Home Page</h1>
-</main>
-
+<% if (error) { %>
+<%= error %>
+<% } %>
 <%- include('footer') %>

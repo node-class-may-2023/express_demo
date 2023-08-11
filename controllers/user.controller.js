@@ -82,7 +82,53 @@ const login = async (req, res) => {
   }
 }
 
+const submit = async (req, res) => {
+  try {
+    // destructure the email, and password
+    const { email, password } = req.body
+    const unAuthenticatedOptions = {
+      errors: {
+        message: 'Wrong email or password'
+      },
+      isLoggedIn: false
+    }
+    // in case of no email or password
+    if (!email || !password) {
+      res.status(422).res.render('submit', unAuthenticatedOptions)
+    }
+
+    // check if user exists
+    const user = await userModel.findOne({ email }).exec()
+    if (!user) {
+      res.status(401).render('submit', unAuthenticatedOptions)
+      return
+    }
+
+    // check if the password is valid
+    const isValidPassword = await bcrypt.compare(password, user.passwordHash)
+    if (!isValidPassword) {
+      res.status(401).render('submit', unAuthenticatedOptions)
+      return
+    }
+
+    // issue token
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRY
+    })
+
+    const JWT_KEY = process.env.JWT_KEY_NAME
+
+    res
+      .header({ [JWT_KEY]: token })
+      .cookie([JWT_KEY], token)
+      .render('index', { isLoggedIn: true })
+  } catch (userLoginError) {
+    res.status(500).send(userLoginError.message)
+  }
+}
+
 module.exports = {
   register,
-  login
+  login,
+  submit
 }
