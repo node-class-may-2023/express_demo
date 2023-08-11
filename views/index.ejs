@@ -1,5 +1,22 @@
-<ul>
-	<% items.forEach(item=> { %>
-	<li><%=item.todoText%></li>
-	<%})%>
-</ul>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="style.css">
+	<script src="script.js"></script>
+</head>
+
+<body>
+
+	<h1 class="page-title">Welcome, <%= name%></h1>
+	<p>Your age is <%= age%></p>
+
+	<% if(age >= 18) { %>
+	<p>Welcome, you can access the grown ups section</p>
+	<% } else { %>
+	<p>Welcome, you can access the kids section</p>
+	<% } %>
+
+</body>
+
+</html>

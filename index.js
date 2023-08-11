@@ -29,6 +29,7 @@ const app = express()
 const PORT = process.env.PORT
 
 app.set('view engine', 'ejs')
+app.use(express.static('public'))
 app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
@@ -37,7 +38,7 @@ app.post('/api/v1/users/register', register)
 app.post('/api/v1/users/login', login)
 
 app.get('/', (req, res) => {
-  res.render('index', { items: ['item1', 'item2', 'item3'] })
+  res.render('index', { name: 'John', age: 10 })
 })
 
 // app.use(auth)
