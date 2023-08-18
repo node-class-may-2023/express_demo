@@ -57,17 +57,11 @@ app.get('/todos', (req, res) => {
 })
 app.post('/todos', createTodoPage)
 
-app.post('/api/v1/todos', createTodo)
+app.route('/api/v1/todos').post(createTodo).get(getAllTodos)
 
-app.get('/api/v1/todos', getTodos)
+app.route('/api/v1/todos/:id').get(getTodo).patch(updateTodo).delete(deleteTodo)
 
 app.get('/api/v1/todos/admin', adminAuth, getAllTodos)
-
-app.patch('/api/v1/todos/:id', updateTodo)
-
-app.delete('/api/v1/todos/:id', deleteTodo)
-
-app.get('/api/v1/todos/:id', getTodo)
 
 app.post('/logout', (req, res) => {
   const JWT_KEY = process.env.JWT_KEY_NAME

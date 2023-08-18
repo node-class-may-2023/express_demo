@@ -19,10 +19,10 @@ const createTodo = async (req, res) => {
     }
 
     // get the logged in user id
-    const userId = req?.loggedInUser?._id
+    const user = req?.loggedInUser?._id
 
     // in case of valid data, create new document (record)
-    const newTodo = await todoModel.create({ ...value, userId })
+    const newTodo = await todoModel.create({ ...value, user })
 
     // send response with newly created record (incl. id)
     res.send(newTodo)

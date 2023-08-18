@@ -1,26 +1,42 @@
 [
 	{
-		"id": 1,
-		"name": "T-Shirt",
-		"color": "white",
-		"size": "large"
+		"todoText": "maecenas tristique e",
+		"isComplete": false
 	},
 	{
-		"id": 2,
-		"name": "Shoe",
-		"color": "white",
-		"size": "large"
+		"todoText": "ridiculus mus etiam",
+		"isComplete": false
 	},
 	{
-		"id": 3,
-		"name": "Glasses",
-		"color": "black",
-		"size": "medium"
+		"todoText": "at nibh in hac habitasse platea",
+		"isComplete": true
 	},
 	{
-		"id": 4,
-		"name": "Fancy Shoe",
-		"color": "white",
-		"size": "medium"
+		"todoText": "primis in faucibus orci",
+		"isComplete": true
+	},
+	{
+		"todoText": "at nibh in hac habitasse ",
+		"isComplete": true
+	},
+	{
+		"todoText": "augue quam sollicitudin",
+		"isComplete": false
+	},
+	{
+		"todoText": "libero non mattis pulvinar",
+		"isComplete": false
+	},
+	{
+		"todoText": "sed magna at nunc commodo placerat",
+		"isComplete": true
+	},
+	{
+		"todoText": "sit amet cursus id turpis integer",
+		"isComplete": true
+	},
+	{
+		"todoText": "et ultrices posuere cubilia ",
+		"isComplete": false
 	}
 ]
